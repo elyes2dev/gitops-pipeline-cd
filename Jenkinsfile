@@ -37,7 +37,7 @@ pipeline {
 
                         git add .
                         git commit -m "🔄 Update deployment image tag to latest"
-                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/elyes2dev/gitops-pipeline-cd.git ${BRANCH}
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/elyes2dev/gitops-pipeline-cd ${BRANCH}
                     """
                 }
             }
