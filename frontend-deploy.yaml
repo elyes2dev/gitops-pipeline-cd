@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: elyeshub/portfolio-app-pipeline-frontend:testae
+          image: elyeshub/portfolio-app-pipeline-frontend:latest
           ports:
             - containerPort: 80
 ---
