@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone GitOps Repo') {
             steps {
-                git branch: "${BRANCH}", credentialsId: 'github', url: "${GIT_REPO}"
+                git branch: "${BRANCH}", credentialsId: 'github2', url: "${GIT_REPO}"
             }
         }
 
@@ -45,7 +45,7 @@ pipeline {
 
         stage('Commit & Push Changes') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'github2', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     sh """
                         git config --global user.name "elyes2dev"
                         git config --global user.email "elyes.zoghlami.1@esprit.tn"
