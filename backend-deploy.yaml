@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: elyeshub/portfolio-app-pipeline-backend:1.0.0-49
+          image: elyeshub/portfolio-app-pipeline-backend:1.0.0-50
           ports:
             - containerPort: 8089
           env:
