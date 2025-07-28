@@ -15,14 +15,29 @@ pipeline {
         stage('Update Deployment Files') {
             steps {
                 script {
-                    def yamlFile = "deployment.yaml"
+                    def files = ['mysql-deploy.yaml', 'frontend-deploy.yaml', 'backend-deploy.yaml']
 
-                    if (fileExists(yamlFile)) {
-                        sh """
-                            sed -i 's|image: .*|image: elyes2dev/devops-project:latest|' ${yamlFile}
-                        """
-                    } else {
-                        error("deployment.yaml not found")
+                    files.each { file ->
+                        if (fileExists(file)) {
+                            echo "Updating image in ${file}"
+                            if (file == 'mysql-deploy.yaml') {
+                                // usually mysql doesn't need an image update, but if needed, add here
+                                sh """
+                                    # Example: update mysql image tag if needed
+                                    # sed -i 's|image: mysql:.*|image: mysql:8.0|' ${file}
+                                """
+                            } else if (file == 'frontend-deploy.yaml') {
+                                sh """
+                                    sed -i 's|image: .*|image: elyeshub/portfolio-app-pipeline-frontend:${IMAGE_TAG}|' ${file}
+                                """
+                            } else if (file == 'backend-deploy.yaml') {
+                                sh """
+                                    sed -i 's|image: .*|image: elyeshub/portfolio-app-pipeline-backend:${IMAGE_TAG}|' ${file}
+                                """
+                            }
+                        } else {
+                            error("File not found: ${file}")
+                        }
                     }
                 }
             }
@@ -35,9 +50,9 @@ pipeline {
                         git config --global user.name "elyes2dev"
                         git config --global user.email "elyes.zoghlami.1@esprit.tn"
 
-                        git add .
-                        git commit -m "🔄 Update deployment image tag to latest"
-                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/elyes2dev/gitops-pipeline-cd ${BRANCH}
+                        git add mysql-deploy.yaml frontend-deploy.yaml backend-deploy.yaml
+                        git commit -m "🔄 Update deployment image tags to ${IMAGE_TAG}"
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/elyes2dev/gitops-pipeline-cd.git ${BRANCH}
                     """
                 }
             }
